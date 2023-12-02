@@ -1,0 +1,12 @@
+:root{
+  --yellow : rgb(180, 125, 5);
+}
+body {
+  background-color:#acacac;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header{
+  text-align: center;
+}
