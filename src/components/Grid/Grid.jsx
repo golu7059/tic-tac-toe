@@ -1,6 +1,5 @@
 import Card from "../Card/Card";
-import { useState } from "react";
-import "./Grid.css";
+import { useState, useEffect } from "react";
 import isWinner from "../../helpers/checkWinner";
 
 function Grid({ numberOfCards }) {
@@ -14,6 +13,9 @@ function Grid({ numberOfCards }) {
     const win = isWinner(board, turn ? 'o' : 'x');
     if (win) {
       setWinner(win);
+    } else if (board.every(cell => cell !== "")) {
+      // Check if all cells are filled and no winner
+      setWinner("No winner");
     }
     setBoard([...board]);
     setTurn(!turn);
@@ -26,15 +28,20 @@ function Grid({ numberOfCards }) {
   }
 
   return (
-    <div className="grid-wrapper">
+    <div className="grid-wrapper bg-gradient-to-br from-blue-900 via-black to-blue-900 min-h-screen flex flex-col items-center justify-center p-4">
       {winner && (
         <>
-          <h1 className="winner-announcement">Winner is {winner}!</h1>
-          <button className="reset" onClick={reset}>Reset Game</button>
+          <h1 className="winner-announcement text-3xl text-white mb-6 animate-bounce">
+            {winner === "No winner" ? "No winner!" : `Winner is ${winner}!`}
+          </h1>
         </>
       )}
-      {!winner && <h1 className="turn-highlight">Current turn: {turn ? 'o' : 'x'}</h1>}
-      <div className="grid">
+      {!winner && (
+        <h1 className="turn-highlight text-2xl text-white mb-4">
+          Current turn: <span className="font-bold">{turn ? 'o' : 'x'}</span>
+        </h1>
+      )}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-sm sm:max-w-md md:max-w-lg p-5">
         {board.map((el, idx) => (
           <Card
             gameEnd={winner ? true : false}
@@ -45,6 +52,11 @@ function Grid({ numberOfCards }) {
           />
         ))}
       </div>
+      <>
+          <button className="reset bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 mt-6 px-4 rounded shadow-lg transition duration-300 transform hover:scale-105" onClick={reset}>
+            Reset Game
+          </button>
+        </>
     </div>
   );
 }
