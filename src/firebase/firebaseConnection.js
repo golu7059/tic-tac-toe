@@ -1,12 +1,8 @@
-// Import the functions you need from the SDKs you need
+// Import the functions you need from the Firebase SDKs
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { Database, getDatabase } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getDatabase } from "firebase/database";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Your Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyC4AoL-4MOyYTg-btmkqIu-nhYbSXyxRKc",
   authDomain: "tic-tac-toe-55462.firebaseapp.com",
@@ -14,12 +10,12 @@ const firebaseConfig = {
   storageBucket: "tic-tac-toe-55462.appspot.com",
   messagingSenderId: "607004283385",
   appId: "1:607004283385:web:1494b7235f9019e5036d28",
-  measurementId: "G-LGNBGGVE56"
+  measurementId: "G-LGNBGGVE56",
+  databaseURL: "https://tic-tac-toe-55462-default-rtdb.firebaseio.com/"  // Add the database URL
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
 const db = getDatabase(app);
-export {db};
+
+export { db };

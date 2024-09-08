@@ -1,15 +1,17 @@
-
+import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
 import './App.css'
-import Grid from "./components/Grid/Grid"
+import Home from './pages/Home'
+import RoomPage from './pages/RoomPage';
+import Game from './pages/Game';
 function App() {
-  
   return (
-    <div>
-    <h1 className="header"> TIC-TAC-TOE&ensp;GAME  </h1>
-      <Grid numberOfCards={9}/>
-      
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/room" element={<RoomPage />} />
+        <Route path="/game/:roomId" element={<Game />} />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App
+export default App;
