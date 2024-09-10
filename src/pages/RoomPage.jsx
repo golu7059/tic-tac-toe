@@ -13,8 +13,12 @@ function RoomPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-900 via-black to-blue-900 p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-900 via-black to-blue-900 p-16">
       {/* Page Title */}
+      <img 
+      src="https://cdni.iconscout.com/illustration/premium/thumb/gamers-play-online-video-game-illustration-download-in-svg-png-gif-file-formats--blogger-logo-live-gaming-streaming-esport-gamer-pack-people-illustrations-4231654.png?f=webp" 
+      alt="logo"  
+      className='h-24 mb-10'/>
       <h1 className="text-5xl font-bold text-white mb-10 text-center drop-shadow-lg">
         Join a Room
       </h1>
