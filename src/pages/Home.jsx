@@ -5,44 +5,50 @@ import { GiTicTacToe } from "react-icons/gi";
 function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-purple-900 p-16">
       {/* Game Title */}
-      <div className="text-center mb-8">
-        <GiTicTacToe className="text-8xl text-white animate-pulse mb-4" />
-        <h1 className="text-6xl font-bold text-white tracking-wider">Tic-Tac-Toe</h1>
-        <h3 className="text-2xl text-gray-300 mt-2">Choose a mode to play</h3>
+      <div className="text-center mb-12">
+        <GiTicTacToe className="text-9xl text-white animate-spin-slow mb-6 drop-shadow-lg" />
+        <h1 className="text-6xl font-bold text-white tracking-wider drop-shadow-md">
+          Tic-Tac-Toe
+        </h1>
+        <h3 className="text-xl sm:text-2xl text-gray-300 mt-2">
+          Choose a mode to start playing
+        </h3>
       </div>
 
       {/* Game Modes */}
-      <div className="flex space-x-6 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6 max-w-lg w-full ">
         {/* Online Mode */}
         <Link to="/room">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full flex items-center space-x-2 transform hover:scale-105 transition-transform duration-300">
-            <FaGlobe className="text-2xl" />
-            <span className="text-xl">Online</span>
+          <button className="bg-blue-500 bg-opacity-90 hover:bg-opacity-100 text-white font-bold py-4 px-8 rounded-full flex items-center justify-center space-x-3 transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl hover:backdrop-blur">
+            <FaGlobe className="text-3xl" />
+            <span className="text-lg">Online</span>
           </button>
         </Link>
 
         {/* Offline Mode */}
         <Link to="/offline">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full flex items-center space-x-2 transform hover:scale-105 transition-transform duration-300">
-            <FaGamepad className="text-2xl" />
-            <span className="text-xl">Offline</span>
+          <button className="bg-orange-500 bg-opacity-90 hover:bg-opacity-100 text-white font-bold py-4 px-8 rounded-full flex items-center justify-center space-x-3 transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl hover:backdrop-blur">
+            <FaGamepad className="text-3xl" />
+            <span className="text-lg">Offline vs 2</span>
           </button>
         </Link>
 
         {/* Play vs Computer Mode */}
         <Link to="/computer">
-          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full flex items-center space-x-2 transform hover:scale-105 transition-transform duration-300">
-            <FaRobot className="text-2xl" />
-            <span className="text-xl">Computer</span>
+          <button className="bg-green-500 bg-opacity-90 hover:bg-opacity-100 text-white font-bold py-4 px-8 rounded-full flex items-center justify-center space-x-3 transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl hover:backdrop-blur">
+            <FaRobot className="text-3xl" />
+            <span className="text-lg">play with Computer</span>
           </button>
         </Link>
       </div>
 
       {/* Footer or Additional Info */}
-      <footer className="mt-12 text-gray-400">
-        <p>Play, Enjoy, and Have Fun!</p>
+      <footer className="mt-12 text-gray-400 text-sm sm:text-base">
+        <p className="opacity-80 hover:opacity-100 transition-opacity duration-300">
+          Play, Enjoy, and Have Fun! ✨
+        </p>
       </footer>
     </div>
   );
