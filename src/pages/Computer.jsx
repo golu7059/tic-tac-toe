@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Card from "../components/Card/Card";
 import isWinner from "../helpers/checkWinner";
 import { FaRegSmile } from "react-icons/fa";
-import { TbMoodSad2 } from "react-icons/tb";
+import { FaRegFaceSadCry } from "react-icons/fa6";
+import { FaGamepad } from "react-icons/fa";
 
 // Helper function to get a random available move for the computer
 const getRandomEmptyCell = (board) => {
@@ -80,29 +82,40 @@ function Computer() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900 p-4">
-      <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8">Play vs Computer</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900 p-16">
+      {/* Title */}
+      <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8">
+        Play vs Computer
+      </h1>
+
+      {/* Winner Announcement */}
       {winner && (
-        <h1 className="winner-announcement text-3xl text-white mb-6 animate-bounce">
+        <h1 className="winner-announcement text-3xl sm:text-4xl text-white mb-6 animate-bounce">
           {winner === "No winner" ? (
-            "No winner!"
+            "It's a Tie!"
           ) : winner === "x" ? (
-            <span>
-              You lose! <TbMoodSad2 className="inline-block ml-2" />
+            <span className="flex items-center">
+              You lose!
+              <FaRegFaceSadCry className="ml-2 text-yellow-500 text-3xl sm:text-4xl" />
             </span>
           ) : (
-            <span>
-              You win! <FaRegSmile className="inline-block ml-2" />
+            <span className="flex items-center">
+              You win!
+              <FaRegSmile className="ml-2 text-green-500 text-3xl sm:text-4xl" />
             </span>
           )}
         </h1>
       )}
+
+      {/* Turn Announcement */}
       {!winner && (
-        <h1 className="turn-highlight text-2xl text-white mb-4">
+        <h1 className="turn-highlight text-2xl sm:text-3xl text-white mb-4">
           {turn ? "Your turn (o)" : "Computer's turn (x)"}
         </h1>
       )}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-sm sm:max-w-md md:max-w-lg p-5">
+
+      {/* Game Grid */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-xs sm:max-w-sm md:max-w-lg p-5">
         {board.map((el, idx) => (
           <Card
             gameEnd={!!winner}
@@ -113,12 +126,24 @@ function Computer() {
           />
         ))}
       </div>
+
+      {/* Reset Button */}
       <button
-        className="reset bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 mt-6 px-4 rounded shadow-lg transition duration-300 transform hover:scale-105"
+        className="reset bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 mt-6 px-6 rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
         onClick={reset}
       >
         Reset Game
       </button>
+
+       {/* Back Button */}
+       <div className="mt-10">
+        <Link to="/">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full flex items-center space-x-2 transition-transform duration-300 transform hover:scale-105">
+            <FaGamepad className="text-lg" />
+            <span>Back to Home</span>
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
