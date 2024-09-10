@@ -1,9 +1,9 @@
-import Grid from '../components/Grid'
+import Grid from '../components/Grid/Grid'
 function Computer(){
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <h1 className="text-6xl font-bold">Computer</h1>
-            <Grid/>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-700">
+            <h1 className="text-2xl font-bold">Computer</h1>
+            <Grid numberOfCards={9}/>
         </div>
     )
 }
