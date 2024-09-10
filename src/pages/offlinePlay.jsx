@@ -5,20 +5,20 @@ import { Link } from "react-router-dom";
 function OfflinePlay() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white p-4">
-      {/* Header */}
+      {/* Header with Icon */}
       <header className="mb-8 flex flex-col items-center space-y-3 text-center">
         <FaGamepad className="text-6xl sm:text-7xl text-orange-500 animate-pulse" />
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest">
           Offline Play
         </h1>
         <p className="text-lg sm:text-xl text-gray-300 tracking-wide">
-          Challenge yourself in a classic Tic-Tac-Toe game
+          Challenge yourself in classic Tic-Tac-Toe
         </p>
       </header>
 
-      {/* Game Grid */}
+      {/* Tic-Tac-Toe Grid */}
       <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-        <Grid numberOfCards={9} />
+        <Grid numberOfCards={9}/>
       </div>
 
       {/* Back Button */}

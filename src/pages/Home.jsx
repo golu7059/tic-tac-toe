@@ -8,7 +8,7 @@ function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-purple-900 p-16">
       {/* Game Title */}
       <div className="text-center mb-12">
-        <GiTicTacToe className="text-9xl text-white animate-spin-slow mb-6 drop-shadow-lg" />
+        <GiTicTacToe className="text-9xl text-white animate-spin-slow mb-6 drop-shadow-lg animate-pulse" />
         <h1 className="text-6xl font-bold text-white tracking-wider drop-shadow-md">
           Tic-Tac-Toe
         </h1>
@@ -46,7 +46,7 @@ function Home() {
 
       {/* Footer or Additional Info */}
       <footer className="mt-12 text-gray-400 text-sm sm:text-base">
-        <p className="opacity-80 hover:opacity-100 transition-opacity duration-300">
+        <p className="opacity-80 hover:opacity-100 transition-opacity duration-300 font-mono">
           Play, Enjoy, and Have Fun! ✨
         </p>
       </footer>
