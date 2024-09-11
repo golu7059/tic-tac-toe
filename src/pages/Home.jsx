@@ -9,7 +9,7 @@ function Home() {
       {/* Game Title */}
       <div className="text-center mb-12">
         <GiTicTacToe className="text-9xl text-white animate-spin-slow mb-6 drop-shadow-lg animate-pulse" />
-        <h1 className="text-6xl font-bold text-white tracking-wider drop-shadow-md">
+        <h1 className="text-6xl font-bold text-white tracking-wider drop-shadow-md ">
           Tic-Tac-Toe
         </h1>
         <h3 className="text-xl sm:text-2xl text-gray-300 mt-2">

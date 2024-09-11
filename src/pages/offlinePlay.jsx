@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/Card/Card";
-import isWinner from "../helpers/checkWinner";
+import isWinner from "../helpers/checkWinner.js";
 import { FaRegSmile } from "react-icons/fa";
 import { FaRegFaceSadCry } from "react-icons/fa6";
 import { FaGamepad } from "react-icons/fa";
 
 // Helper function to check winner or tie.
 // import google font cdn
-import "https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap";
 
 const checkGameEnd = (board, player) => {
   const win = isWinner(board, player);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/Card/Card";
-import isWinner from "../helpers/checkWinner";
+import isWinner from "../helpers/checkWinner.js";
 import { FaRegSmile } from "react-icons/fa";
 import { FaRegFaceSadCry } from "react-icons/fa6";
 import { FaGamepad } from "react-icons/fa";

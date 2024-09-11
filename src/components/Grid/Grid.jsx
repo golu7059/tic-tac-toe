@@ -1,6 +1,6 @@
 import Card from "../Card/Card";
 import { useState } from "react";
-import isWinner from "../../helpers/checkWinner";
+import isWinner from "../../helpers/checkWinner.js";
 
 function Grid({ numberOfCards }) {
   const [board, setBoard] = useState(Array(numberOfCards).fill(""));
