@@ -5,7 +5,7 @@ import { GiTicTacToe } from "react-icons/gi";
 function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-purple-900 p-16">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-purple-900 p-6 md:p-16">
       {/* Game Title */}
       <div className="text-center mb-12">
         <GiTicTacToe className="text-9xl text-white animate-spin-slow mb-6 drop-shadow-lg animate-pulse" />

@@ -82,7 +82,7 @@ function Computer() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900 p-16">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900 p-6  md:p-16">
       {/* Title */}
       <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8">
         Play vs Computer
