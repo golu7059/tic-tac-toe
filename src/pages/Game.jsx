@@ -1,39 +1,133 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { db } from '../firebase/firebaseConnection';
-import { ref, set, onValue } from 'firebase/database';
+import getSocket from '../helpers/serverWsClient';
+import isWinner from '../helpers/checkWinner.js';
+import RoomWaiting from './RoomWaiting.jsx';
 
 function Game() {
   const { roomId } = useParams();
   const { state } = useLocation();
+  const localPlayerId = state?.playerId; 
+  const [players, setPlayers] = useState((state && state.players) || []);
+  const [gameReady, setGameReady] = useState(players.length === 2);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
+  const [winner, setWinner] = useState("");
 
-  // Sync game state from Firebase
+  let localSymbol = "";
+  if (players.length >= 2) {
+    localSymbol = players[0].id === localPlayerId ? 'X' : 'O';
+  }
+
+  // Listen to socket messages for opponent moves and win events
   useEffect(() => {
-    const gameRef = ref(db, `rooms/${roomId}`);
-    onValue(gameRef, (snapshot) => {
-      const gameData = snapshot.val();
-      if (gameData) {
-        setBoard(Array.isArray(gameData.board) ? gameData.board : Array(9).fill(null));
-        setIsXNext(gameData.isXNext ?? true);
+    const ws = getSocket();
+    ws.onmessage = (event) => {
+      const processData = (data) => {
+        if (data.roomId !== roomId) return;
+        if (data.type === "move") {
+          setBoard(data.board);
+          setIsXNext(data.isXNext);
+        } else if (data.type === "win") {
+          setWinner(data.winner);
+        }
+      };
+      if (event.data instanceof Blob) {
+        event.data.text().then((text) => {
+          try {
+            const data = JSON.parse(text);
+            processData(data);
+          } catch (err) {
+            console.error("Error processing socket message", err);
+          }
+        });
+      } else {
+        try {
+          const data = JSON.parse(event.data);
+          processData(data);
+        } catch (err) {
+          console.error("Error processing socket message", err);
+        }
       }
-    });
+    };
   }, [roomId]);
 
-  // Handle a move
-  const handleClick = (index) => {
-    if (!board[index]) {
-      const newBoard = board.slice();
-      newBoard[index] = isXNext ? 'X' : 'O';
-      setBoard(newBoard);
-      setIsXNext(!isXNext);
+  // Send join message when game is ready.
+  useEffect(() => {
+    if (gameReady) {
+      getSocket().send(JSON.stringify({ type: "join", roomId }));
+    }
+  }, [gameReady, roomId]);
 
-      // Update the game state in Firebase
-      set(ref(db, `rooms/${roomId}`), {
-        board: newBoard,
-        isXNext: !isXNext,
-      });
+  // Poll room status until two players are present.
+  useEffect(() => {
+    if (!gameReady) {
+      const interval = setInterval(async () => {
+        try {
+          const res = await fetch(`http://localhost:8080/getRoom?roomId=${roomId}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.players && data.players.length === 2) {
+              setPlayers(data.players);
+              setGameReady(true);
+              clearInterval(interval);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching room status", error);
+        }
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [roomId, gameReady]);
+
+  if (!gameReady) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 via-black to-blue-900">
+        {/* <h1 className="text-2xl text-white">Waiting for another player to join...</h1> */}
+        <RoomWaiting roomId={roomId} />
+      </div>
+    );
+  }
+
+  // Handle a move: if the move is valid, update the board and check for a winner.
+  const handleClick = (index) => {
+    if (winner) return; // No further moves if game ended.
+    const expectedSymbol = isXNext ? 'X' : 'O';
+    if (localSymbol !== expectedSymbol) return; // Not your turn.
+    if (board[index] !== null) return; // Cell filled.
+    const newBoard = board.slice();
+    newBoard[index] = expectedSymbol;
+    const newTurn = !isXNext;
+    setBoard(newBoard);
+    setIsXNext(newTurn);
+
+    // Send move message
+    const message = JSON.stringify({
+      type: "move",
+      roomId,
+      board: newBoard,
+      isXNext: newTurn
+    });
+    const ws = getSocket();
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(message);
+    } else {
+      console.error("Cannot send message, socket state:", ws.readyState);
+      getSocket();
+    }
+
+    // Check for a winner
+    const potentialWin = isWinner(newBoard, expectedSymbol);
+    if (potentialWin) {
+      setWinner(potentialWin);
+      // Broadcast win message
+      getSocket().send(JSON.stringify({
+        type: "win",
+        roomId,
+        winner: potentialWin
+      }));
+    } else {
     }
   };
 
@@ -48,13 +142,21 @@ function Game() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-800 via-black to-blue-800 p-6">
-      {/* <h1 className="text-3xl font-bold text-white mb-4">Tic Tac Toe - Room: {roomId}</h1>
-      <h2 className="text-xl text-gray-300 mb-6">Player: {state?.name}</h2>
-      <div className="grid grid-cols-3 gap-2 max-w-xs w-full">
+    <div className="grid-wrapper bg-gradient-to-br from-blue-900 via-black to-blue-900 min-h-screen flex flex-col items-center justify-center p-4">
+      <h1 className="text-3xl font-bold mb-4 text-white">Game Started! Room: {roomId}</h1>
+      <p className="mb-4 text-white">Players: {players.map(p => p.name).join(", ")}</p>
+      {winner ? (
+        <h2 className="turn-highlight text-xl sm:text-2xl text-white mb-4">
+          Winner: {winner}
+        </h2>
+      ) : (
+        <h2 className="turn-highlight text-xl sm:text-2xl text-white mb-4">
+          {localSymbol === (isXNext ? 'X' : 'O') ? "Your turn" : "Opponent's turn"} ({isXNext ? "X" : "O"})
+        </h2>
+      )}
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
         {board.map((_, idx) => renderSquare(idx))}
-      </div> */}
-      <p className='font-mono text-3xl font-bold text-orange-700'>Available soon ! Working on it ..... </p>
+      </div>
     </div>
   );
 }

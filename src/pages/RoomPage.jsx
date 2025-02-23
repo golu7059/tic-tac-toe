@@ -6,9 +6,22 @@ function RoomPage() {
   const [roomId, setRoomId] = useState('');
   const navigate = useNavigate();
 
-  const handleJoinRoom = () => {
+  const handleJoinRoom = async () => {
     if (name && roomId) {
-      navigate(`/game/${roomId}`, { state: { name } });
+      try {
+        const res = await fetch(`http://localhost:8080/joinRoom?roomId=${roomId}&name=${name}`);
+        if (res.ok) {
+          const data = await res.json();
+          // Redirect directly to the game page after joining
+          navigate(`/game/${roomId}`, {
+            state: { roomId: data.roomId, playerId: data.playerId, playerName: data.playerName },
+          });
+        } else {
+          console.error("Room not found or full");
+        }
+      } catch (error) {
+        console.error("Error joining room", error);
+      }
     }
   };
 

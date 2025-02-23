@@ -20,7 +20,7 @@ function Home() {
       {/* Game Modes */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6 max-w-lg w-full ">
         {/* Online Mode */}
-        <Link to="/room">
+        <Link to="/online">
           <button className="bg-blue-500 bg-opacity-90 hover:bg-opacity-100 text-white font-bold py-4 px-8 rounded-full flex items-center justify-center space-x-3 transform hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl hover:backdrop-blur">
             <FaGlobe className="text-3xl" />
             <span className="text-lg">Online</span>
